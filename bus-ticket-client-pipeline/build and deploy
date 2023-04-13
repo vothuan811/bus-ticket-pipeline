@@ -39,10 +39,14 @@ pipeline {
         
     }
     post{
-        always{
+        success {
+            slackSend "Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
             cleanWs()
         }
-        
+        unsuccessful{
+            slackSend "Build deployed unsuccessfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            cleanWs()
+        }
     }
 }
 
