@@ -1,7 +1,7 @@
 #!groovy?
 
 env.branch = 'master'
-env.credentialId = 'vothuan'
+env.credentialId = 'github'
 env.timeoutGithub = '30'
 
 //Define variable of repositories url 
