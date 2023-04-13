@@ -1,0 +1,12 @@
+#!groovy?
+
+env.branch = 'master'
+env.credentialId = 'credentialId_vothuan'
+env.timeoutGithub = '30'
+
+//Define variable of repositories url 
+env.gitUrlClient = "https://github.com/superdark1999/bus-ticket-client"
+env.gitUrlServer = "https://github.com/superdark1999/bus-ticket-server"
+
+//Define git folder
+env.gitFolderClient = 'bus-ticket-client'
