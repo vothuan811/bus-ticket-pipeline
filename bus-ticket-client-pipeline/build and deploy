@@ -40,11 +40,11 @@ pipeline {
     }
     post{
         success {
-            slackSend "Build deployed successfully"
+            slackSend color: "good", message: "Build deployed successfully"
             cleanWs()
         }
         failure {
-            slackSend "Build failed"
+            slackSend color:"danger", message: "Build failed"
             cleanWs()
         }
     }
