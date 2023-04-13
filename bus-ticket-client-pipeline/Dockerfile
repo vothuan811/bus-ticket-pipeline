@@ -8,5 +8,5 @@ RUN npm run build
 # production stage
 FROM nginx:1.17-alpine as production-stage
 COPY --from=build-stage /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY /app/conf/nginx.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
