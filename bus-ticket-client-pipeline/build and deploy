@@ -19,11 +19,9 @@ pipeline {
         stage('Build Image'){
             steps{
                 sh """
-                    ls
                     cd ${WORKSPACE}/${gitFolderClient}
-                    ls
                     docker rmi -f bus-ticket-client:dev
-                    cp -f ${WORKSPACE}/Dockerfile .
+                    cp -f ${WORKSPACE}/bus-ticket-client-pipeline/Dockerfile .
                     docker build -t bus-ticket-client:dev
                 """
             }
