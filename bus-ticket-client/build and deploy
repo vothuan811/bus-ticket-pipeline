@@ -1,0 +1,22 @@
+#!groovy?
+pipeline {
+    agent any
+    stages{
+        stage{
+            steps{
+                script{
+                    sh '''
+                        echo "hello world"
+                    '''    
+                }
+            }
+        }
+        
+    }
+    post{
+        sh '''
+            echo "end"
+        '''
+    }
+}
+
