@@ -2,11 +2,11 @@
 pipeline {
     agent any
     stages{
-        stage('test build'){
+        stage('deploy'){
             steps{
                 script{
                     sh '''
-                        echo "hello world"
+                        cd /app/compose && docker compose up -d
                     '''    
                 }
             }
