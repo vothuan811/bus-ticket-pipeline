@@ -21,6 +21,7 @@ pipeline {
                 sh """
                     ls
                     cd ${WORKSPACE}/${gitFolderClient}
+                    ls
                     docker rmi -f bus-ticket-client:dev
                     cp -f ${WORKSPACE}/Dockerfile .
                     docker build -t bus-ticket-client:dev
