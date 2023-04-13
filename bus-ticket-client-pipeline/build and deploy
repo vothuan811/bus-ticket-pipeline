@@ -22,7 +22,7 @@ pipeline {
                     cd ${WORKSPACE}/${gitFolderClient}
                     docker rmi -f bus-ticket-client:dev
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/Dockerfile .
-                    docker build -t bus-ticket-client:dev
+                    docker build -t bus-ticket-client:dev .
                 """
             }
         }
