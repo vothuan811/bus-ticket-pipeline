@@ -2,7 +2,7 @@
 pipeline {
     agent any
     stages{
-        stage{
+        stage('test build'){
             steps{
                 script{
                     sh '''
@@ -14,9 +14,7 @@ pipeline {
         
     }
     post{
-        sh '''
-            echo "end"
-        '''
+        cleanWs()
     }
 }
 
