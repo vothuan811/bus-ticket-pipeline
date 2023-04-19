@@ -24,6 +24,8 @@ pipeline {
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/Dockerfile .
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/nginx.conf .
                     docker build -t bus-ticket-client:dev .
+                    docker tag bus-ticket-client:dev bus-ticket/bus-client:dev
+                    docker push bus-ticket/bus-client:dev
                 """
             }
         }
@@ -31,7 +33,7 @@ pipeline {
             steps{
                 script{
                     sh '''
-                        cd /app/compose && {docker compose pull client; docker compose up -d client}
+                        cd /app/compose && {docker compose pull bus-client; docker compose up -d bus-client}
                     '''    
                 }
             }
