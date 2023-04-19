@@ -24,6 +24,7 @@ pipeline {
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/Dockerfile .
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/nginx.conf .
                     docker build --no-cache -t vothuan811/bus-client:dev .
+                    docker login -u "vothuan811" -p "thuanbeo811"
                     docker push vothuan811/bus-client:dev
                 """
             }
@@ -32,6 +33,7 @@ pipeline {
             steps{
                 script{
                     sh '''
+                        docker login -u "vothuan811" -p "thuanbeo811"
                         cd /app/compose && {docker compose pull bus-client; docker compose up -d bus-client}
                     '''    
                 }
