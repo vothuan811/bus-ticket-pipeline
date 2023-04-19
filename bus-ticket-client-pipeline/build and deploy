@@ -34,7 +34,9 @@ pipeline {
                 script{
                     sh '''
                         docker login -u "vothuan811" -p "thuanbeo811"
-                        cd /app/compose && {docker compose pull bus-client; docker compose up -d bus-client}
+                        cd /app/compose 
+                        docker compose pull bus-client 
+                        docker compose up -d bus-client
                     '''    
                 }
             }
