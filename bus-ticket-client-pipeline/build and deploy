@@ -31,7 +31,7 @@ pipeline {
             steps{
                 script{
                     sh '''
-                        cd /app/compose && docker compose up -d
+                        cd /app/compose && {docker compose pull client; docker compose up -d client}
                     '''    
                 }
             }
