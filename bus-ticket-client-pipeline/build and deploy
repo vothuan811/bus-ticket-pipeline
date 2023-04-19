@@ -20,12 +20,10 @@ pipeline {
             steps{
                 sh """
                     cd ${WORKSPACE}/${gitFolderClient}
-                    docker rmi -f bus-ticket-client:dev
+                    docker rmi -f vothuan811/bus-client:dev
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/Dockerfile .
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/nginx.conf .
-                    docker build -t bus-ticket-client:dev .
-                    docker tag bus-ticket-client:dev bus-ticket/bus-client:dev
-                    docker push bus-ticket/bus-client:dev
+                    docker build -t vothuan811/bus-client:dev .
                 """
             }
         }
