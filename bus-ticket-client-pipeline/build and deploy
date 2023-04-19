@@ -23,7 +23,7 @@ pipeline {
                     docker rmi -f vothuan811/bus-client:dev
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/Dockerfile .
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/nginx.conf .
-                    docker build -t vothuan811/bus-client:dev .
+                    docker build --no-cache -t vothuan811/bus-client:dev .
                     docker push vothuan811/bus-client:dev
                 """
             }
