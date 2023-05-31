@@ -10,7 +10,7 @@ pipeline {
                 }
             }
         }
-    }
+    
         stage('Checkout'){
             steps{
                 checkout changelog: true, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: "${timeoutGithub}"], [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: "${timeoutGithub}"], [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gitFolderClient}"]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "${credentialId}", url: "${gitUrlClient}"]]]
@@ -24,6 +24,7 @@ pipeline {
               """
             }
         }
+    }
     post{
         success {
             slackSend color: "good", message: "Client code update successfully"
