@@ -1,0 +1,37 @@
+#!groovy?
+pipeline {
+    agent any
+    stages{
+        stage('Load environment variables') {
+            steps {
+                script {
+                    //Get Environment Variables From pipeline/Life/env
+                    load 'env'
+                }
+            }
+        }
+        stage('Checkout'){
+            steps{
+                checkout changelog: true, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: "${timeoutGithub}"], [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: "${timeoutGithub}"], [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gitFolderClient}"]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "${credentialId}", url: "${gitUrlClient}"]]]
+            }
+        }
+        
+        stage('Copy code change'){
+            steps{
+              sh """
+                cd ${WORKSPACE}/${gitFolderClient}
+                cp -r src/. /app/bus-ticket-client
+              """
+            }
+        }
+    post{
+        success {
+            slackSend color: "good", message: "Client build deployed successfully"
+            cleanWs()
+        }
+        failure {
+            slackSend color:"danger", message: "Client build failed"
+            cleanWs()
+        }
+    }
+ }
