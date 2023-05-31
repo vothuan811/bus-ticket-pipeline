@@ -19,8 +19,11 @@ pipeline {
         stage('Build Image'){
             steps{
                 sh """
-                    cd ${WORKSPACE}/${gitFolderClient}
+                    cd /app/compose
+                    docker compose down bus-client
+                    docker rm bus-client
                     docker rmi -f vothuan811/bus-client:dev
+                    cd ${WORKSPACE}/${gitFolderClient}
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/Dockerfile .
                     docker build --no-cache -t vothuan811/bus-client:dev .
                     docker login -u "vothuan811" -p "thuanbeo811"
