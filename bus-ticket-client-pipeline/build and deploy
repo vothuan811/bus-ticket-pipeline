@@ -21,6 +21,8 @@ pipeline {
                 sh """
                     cd /app/compose
                     docker compose stop bus-client
+                    docker rm bus-client
+                    docker rmi vothuan811/bus-client:dev
                     cd ${WORKSPACE}/${gitFolderClient}
                     cp -f ${WORKSPACE}/bus-ticket-client-pipeline/Dockerfile .
                     docker build --no-cache -t vothuan811/bus-client:dev .
