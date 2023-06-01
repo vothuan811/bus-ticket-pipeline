@@ -21,6 +21,7 @@ pipeline {
               sh """
                 cd ${WORKSPACE}/${gitFolderClient}
                 cp -rf src/. /app/bus-ticket-client/src/
+                cp -rf public/. /app/bus-ticket-client/public/
               """
             }
         }
