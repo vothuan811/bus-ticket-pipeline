@@ -20,7 +20,7 @@ pipeline {
             steps{
               sh """
                 cd ${WORKSPACE}/${gitFolderClient}
-                cp -rf src/. /app/bus-ticket-client
+                cp -rf src/. /app/bus-ticket-client/src/
               """
             }
         }
