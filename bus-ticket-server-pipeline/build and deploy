@@ -89,7 +89,7 @@ pipeline {
             cleanWs()
         }
         failure {
-            slackSend color:"danger", message: "Server build failed. Check error: http://busticket.net.eu.org/jenkins/job/bus-ticket-client/"
+            slackSend color:"danger", message: "Server build failed. Check error: http://busticket.net.eu.org/jenkins/job/bus-ticket-server/"
             cleanWs()
         }
     }
