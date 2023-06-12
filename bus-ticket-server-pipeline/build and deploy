@@ -41,7 +41,7 @@ pipeline {
             steps{
                 sh """
                     cd /app/${gitFolderServer}/packages/auth
-                    sudo pm2 start "yarn start" --name auth-trip
+                    sudo pm2 start "yarn start" --name api-auth
                 """
             }
         }
