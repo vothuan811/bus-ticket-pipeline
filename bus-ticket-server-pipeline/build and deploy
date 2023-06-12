@@ -22,7 +22,7 @@ pipeline {
                     cd /app
                     sudo rm -rf ${gitFolderServer}-bk
                     sudo mv ${gitFolderServer} ${gitFolderServer}-bk
-                    sudo cp -r ${WORKSPACE}/. /app/
+                    sudo cp -r ${WORKSPACE}/bus-ticket-server/ /app/
                     cd /app/${gitFolderServer}
                     sudo yarn bootstrap
                 """
