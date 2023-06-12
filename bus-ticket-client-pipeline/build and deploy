@@ -47,11 +47,11 @@ pipeline {
     }
     post{
         success {
-            slackSend color: "good", message: "Client build deployed successfully"
+            slackSend color: "good", message: "Client build deployed successfully at http://busticket.net.eu.org/"
             cleanWs()
         }
         failure {
-            slackSend color:"danger", message: "Client build failed"
+            slackSend color:"danger", message: "Client build failed. Check error: http://busticket.net.eu.org/jenkins/job/bus-ticket-client/"
             cleanWs()
         }
     }
