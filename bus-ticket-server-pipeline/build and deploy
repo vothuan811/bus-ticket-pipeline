@@ -50,8 +50,8 @@ pipeline {
                 sh """
                     cd /app/${gitFolderServer}/packages/trip
                     sudo pm2 start "yarn start" --name api-trip
-                    sleep(time: 20, unit: "SECONDS")
                 """
+                sleep(time: 20, unit: "SECONDS")
             }
         }
 
@@ -60,8 +60,8 @@ pipeline {
                sh """
                     cd /app/${gitFolderServer}/packages/booking
                     sudo pm2 start "yarn start" --name api-booking
-                    sleep(time: 20, unit: "SECONDS")
                 """
+                sleep(time: 20, unit: "SECONDS")
             }
         }
 
@@ -70,8 +70,8 @@ pipeline {
                 sh """
                     cd /app/${gitFolderServer}/packages/coach-restful
                     sudo pm2 start "yarn start" --name api-coach
-                    sleep(time: 20, unit: "SECONDS")
                 """
+                sleep(time: 20, unit: "SECONDS")
             }
         }
 
@@ -80,8 +80,8 @@ pipeline {
                 sh """
                     cd /app/${gitFolderServer}/packages/trip-routes
                     sudo pm2 start "yarn start" --name api-trip-routes
-                    sleep(time: 20, unit: "SECONDS")
                 """
+                sleep(time: 20, unit: "SECONDS")
             }
         }
 
