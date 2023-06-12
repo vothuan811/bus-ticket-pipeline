@@ -23,7 +23,7 @@ pipeline {
                     sudo mv ${gitFolderServer} ${gitFolderServer}-bk
                     sudo cp -r ${WORKSPACE}/. /app/
                     cd /app/${gitFolderServer}
-                    yarn bootstrap
+                    sudo yarn bootstrap
                 """
             }
         }
@@ -31,8 +31,8 @@ pipeline {
         stage('Stop and delete running api'){
             steps{
                 sh """
-                    pm2 stop all
-                    pm2 del all
+                    sudo pm2 stop all
+                    sudo pm2 del all
                 """
             }
         }
@@ -40,7 +40,7 @@ pipeline {
             steps{
                 sh """
                     cd /app/${gitFolderServer}/packages/auth
-                    pm2 start "yarn start" --name auth-trip
+                    sudo pm2 start "yarn start" --name auth-trip
                 """
             }
         }
@@ -48,7 +48,7 @@ pipeline {
             steps{
                 sh """
                     cd /app/${gitFolderServer}/packages/trip
-                    pm2 start "yarn start" --name api-trip
+                    sudo pm2 start "yarn start" --name api-trip
                 """
             }
         }
@@ -57,7 +57,7 @@ pipeline {
             steps{
                sh """
                     cd /app/${gitFolderServer}/packages/booking
-                    pm2 start "yarn start" --name api-booking
+                    sudo pm2 start "yarn start" --name api-booking
                 """
             }
         }
@@ -66,7 +66,7 @@ pipeline {
             steps{
                 sh """
                     cd /app/${gitFolderServer}/packages/coach-restful
-                    pm2 start "yarn start" --name api-coach
+                    sudo pm2 start "yarn start" --name api-coach
                 """
             }
         }
@@ -75,7 +75,7 @@ pipeline {
             steps{
                 sh """
                     cd /app/${gitFolderServer}/packages/trip-routes
-                    pm2 start "yarn start" --name api-trip-routes
+                    sudo pm2 start "yarn start" --name api-trip-routes
                 """
             }
         }
