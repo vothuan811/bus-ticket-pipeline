@@ -20,11 +20,11 @@ pipeline {
             steps{
                 sh """
                     cd /app
-                    chmod 777 ${gitFolderClient}-bk
-                    rm -rf ${gitFolderClient}-bk
-                    mv ${gitFolderClient} ${gitFolderClient}-bk
+                    chmod 777 ${gitFolderServer}-bk
+                    rm -rf ${gitFolderServer}-bk
+                    mv ${gitFolderServer} ${gitFolderServer}-bk
                     cp -r ${WORKSPACE}/. /app/
-                    cd /app/${gitFolderClient}
+                    cd /app/${gitFolderServer}
                     yarn bootstrap
                 """
             }
@@ -41,7 +41,7 @@ pipeline {
         stage('Deploy auth api'){
             steps{
                 sh """
-                    cd /app/${gitFolderClient}/packages/auth
+                    cd /app/${gitFolderServer}/packages/auth
                     pm2 start "yarn start" --name auth-trip
                 """
             }
@@ -49,7 +49,7 @@ pipeline {
         stage('Deploy trip api'){
             steps{
                 sh """
-                    cd /app/${gitFolderClient}/packages/trip
+                    cd /app/${gitFolderServer}/packages/trip
                     pm2 start "yarn start" --name api-trip
                 """
             }
@@ -58,7 +58,7 @@ pipeline {
         stage('Deploy booking api'){
             steps{
                sh """
-                    cd /app/${gitFolderClient}/packages/booking
+                    cd /app/${gitFolderServer}/packages/booking
                     pm2 start "yarn start" --name api-booking
                 """
             }
@@ -67,7 +67,7 @@ pipeline {
         stage('Deploy coach api'){
             steps{
                 sh """
-                    cd /app/${gitFolderClient}/packages/coach-restful
+                    cd /app/${gitFolderServer}/packages/coach-restful
                     pm2 start "yarn start" --name api-coach
                 """
             }
@@ -76,7 +76,7 @@ pipeline {
         stage('Deploy trip-routes api'){
             steps{
                 sh """
-                    cd /app/${gitFolderClient}/packages/trip-routes
+                    cd /app/${gitFolderServer}/packages/trip-routes
                     pm2 start "yarn start" --name api-trip-routes
                 """
             }
