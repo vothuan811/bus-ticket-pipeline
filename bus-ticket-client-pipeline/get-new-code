@@ -19,9 +19,14 @@ pipeline {
         stage('Copy code change'){
             steps{
               sh """
+                cd /app/${gitFolderClient}
+                sudo rm -rf src
+                sudo rm -rf public
+                sudo mkdir src
+                sudo mkdir public
                 cd ${WORKSPACE}/${gitFolderClient}
-                cp -rf src/. /app/bus-ticket-client/src/
-                cp -rf public/. /app/bus-ticket-client/public/
+                sudo cp -rf src/. /app/bus-ticket-client/src/
+                sudo cp -rf public/. /app/bus-ticket-client/public/
               """
             }
         }
