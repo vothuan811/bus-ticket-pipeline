@@ -1,0 +1,97 @@
+#!groovy?
+pipeline {
+    agent any
+    stages{
+        stage('Load environment variables') {
+            steps {
+                script {
+                    //Get Environment Variables From pipeline/Life/env
+                    load 'env'
+                }
+            }
+        }
+        stage('Checkout'){
+            steps{
+                checkout changelog: true, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: "${timeoutGithub}"], [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: "${timeoutGithub}"], [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gitFolderServer}"]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "${credentialId}", url: "${gitUrlServer}"]]]
+            }
+        }
+
+        stage('Build package'){
+            steps{
+                sh """
+                    cd /app
+                    rm -rf ${gitFolderClient}-bk
+                    mv ${gitFolderClient} ${gitFolderClient}-bk
+                    cp -r ${WORKSPACE}/${gitFolderClient}/ /app/
+                    cd /app/${gitFolderClient}
+                    yarn bootstrap
+                """
+            }
+        }
+
+        stage('Stop and delete running api'){
+            steps{
+                sh """
+                    pm2 stop all
+                    pm2 del all
+                """
+            }
+        
+        stage('Deploy auth api'){
+            steps{
+                sh """
+                    cd /app/${gitFolderClient}/packages/auth
+                    pm2 start "yarn start" --name auth-trip
+                """
+            }
+        
+        stage('Deploy trip api'){
+            steps{
+                sh """
+                    cd /app/${gitFolderClient}/packages/trip
+                    pm2 start "yarn start" --name api-trip
+                """
+            }
+        }
+
+        stage('Deploy booking api'){
+            steps{
+               sh """
+                    cd /app/${gitFolderClient}/packages/booking
+                    pm2 start "yarn start" --name api-booking
+                """
+            }
+        }
+
+        stage('Deploy coach api'){
+            steps{
+                sh """
+                    cd /app/${gitFolderClient}/packages/coach-restful
+                    pm2 start "yarn start" --name api-coach
+                """
+            }
+        }
+
+        stage('Deploy trip-routes api'){
+            steps{
+                sh """
+                    cd /app/${gitFolderClient}/packages/trip-routes
+                    pm2 start "yarn start" --name api-trip-routes
+                """
+            }
+        }
+
+        
+    }
+    post{
+        success {
+            slackSend color: "good", message: "Server build deployed successfully at http://busticket.net.eu.org/"
+            cleanWs()
+        }
+        failure {
+            slackSend color:"danger", message: "Server build failed. Check error: http://busticket.net.eu.org/jenkins/job/bus-ticket-client/"
+            cleanWs()
+        }
+    }
+}
+

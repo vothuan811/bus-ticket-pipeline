@@ -10,3 +10,4 @@ env.gitUrlServer = "https://github.com/superdark1999/bus-ticket-server"
 
 //Define git folder
 env.gitFolderClient = 'bus-ticket-client'
+env.gitFolderServer = 'bus-ticket-server'
