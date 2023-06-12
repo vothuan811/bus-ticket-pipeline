@@ -27,6 +27,7 @@ pipeline {
                 cd ${WORKSPACE}/${gitFolderClient}
                 sudo cp -rf src/. /app/bus-ticket-client/src/
                 sudo cp -rf public/. /app/bus-ticket-client/public/
+                sudo docker restart bus-client
               """
             }
         }
