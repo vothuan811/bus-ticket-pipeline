@@ -20,8 +20,8 @@ pipeline {
             steps{
                 sh """
                     cd /app
-                    mv ${gitFolderServer} ${gitFolderServer}-bk
-                    cp -r ${WORKSPACE}/. /app/
+                    sudo mv ${gitFolderServer} ${gitFolderServer}-bk
+                    sudo cp -r ${WORKSPACE}/. /app/
                     cd /app/${gitFolderServer}
                     yarn bootstrap
                 """
