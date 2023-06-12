@@ -20,6 +20,7 @@ pipeline {
             steps{
                 sh """
                     cd /app
+                    chmod 777 ${gitFolderClient}-bk
                     rm -rf ${gitFolderClient}-bk
                     mv ${gitFolderClient} ${gitFolderClient}-bk
                     cp -r ${WORKSPACE}/. /app/
