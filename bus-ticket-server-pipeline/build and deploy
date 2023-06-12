@@ -12,79 +12,38 @@ pipeline {
         }
         stage('Checkout'){
             steps{
-                checkout changelog: true, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: "${timeoutGithub}"], [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: "${timeoutGithub}"], [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gitFolderServer}"]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "${credentialId}", url: "${gitUrlServer}"]]]
+                checkout changelog: true, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: "${timeoutGithub}"], [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: "${timeoutGithub}"], [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gitFolderClient}"]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "${credentialId}", url: "${gitUrlClient}"]]]
             }
         }
 
-        stage('Build package'){
+        stage('Build Image'){
             steps{
                 sh """
-                    cd /app
-                    sudo rm -rf ${gitFolderServer}-bk
-                    sudo mv ${gitFolderServer} ${gitFolderServer}-bk
-                    sudo cp -r ${WORKSPACE}/bus-ticket-server/ /app/
-                    cd /app/${gitFolderServer}
-                    sudo yarn bootstrap
+                    cd /app/compose
+                    docker compose stop bus-server
+                    docker rm bus-server
+                    docker rmi vothuan811/bus-server:dev
+                    cd ${WORKSPACE}/${gitFolderServer}
+                    sudo rm -rf packages/coach/
+                    cp -f ${WORKSPACE}/bus-ticket-server-pipeline/Dockerfile .
+                    docker build --no-cache -t vothuan811/bus-server:dev .
+                    docker login -u "vothuan811" -p "thuanbeo811"
+                    docker push vothuan811/bus-server:dev
                 """
             }
         }
-
-        stage('Stop and delete running api'){
+        stage('Deploy'){
             steps{
-                sh """
-                    sudo pm2 stop all
-                    sudo pm2 del all
-                """
+                script{
+                    sh '''
+                        docker login -u "vothuan811" -p "thuanbeo811"
+                        cd /app/compose
+                        docker compose pull bus-server 
+                        docker compose up -d bus-server
+                    '''    
+                }
             }
         }
-        //stage('Deploy auth api'){
-          //  steps{
-            //    sh """
-              //      cd /app/${gitFolderServer}/packages/auth
-                //    sudo pm2 start "yarn start" --name api-auth
-                //"""
-            //}
-        //}
-        stage('Deploy trip api'){
-            steps{
-                sh """
-                    cd /app/${gitFolderServer}/packages/trip
-                    sudo pm2 start "yarn start" --name api-trip
-                """
-                sleep(time: 20, unit: "SECONDS")
-            }
-        }
-
-        stage('Deploy booking api'){
-            steps{
-               sh """
-                    cd /app/${gitFolderServer}/packages/booking
-                    sudo pm2 start "yarn start" --name api-booking
-                """
-                sleep(time: 20, unit: "SECONDS")
-            }
-        }
-
-        stage('Deploy coach api'){
-            steps{
-                sh """
-                    cd /app/${gitFolderServer}/packages/coach-restful
-                    sudo pm2 start "yarn start" --name api-coach
-                """
-                sleep(time: 20, unit: "SECONDS")
-            }
-        }
-
-        stage('Deploy trip-routes api'){
-            steps{
-                sh """
-                    cd /app/${gitFolderServer}/packages/trip-routes
-                    sudo pm2 start "yarn start" --name api-trip-routes
-                """
-                sleep(time: 20, unit: "SECONDS")
-            }
-        }
-
         
     }
     post{
