@@ -22,7 +22,7 @@ pipeline {
                     cd /app
                     rm -rf ${gitFolderClient}-bk
                     mv ${gitFolderClient} ${gitFolderClient}-bk
-                    cp -r ${WORKSPACE}/${gitFolderClient}/ /app/
+                    cp -r ${WORKSPACE}/. /app/
                     cd /app/${gitFolderClient}
                     yarn bootstrap
                 """
